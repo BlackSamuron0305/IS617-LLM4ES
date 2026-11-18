@@ -1,0 +1,64 @@
+# Cluster folder (not shared)
+cluster/
+
+# Virtual environments
+venv/
+.venv/
+env/
+.env/
+ENV/
+virtualenv/
+.conda/
+conda-env/
+
+# Environment variables and secrets
+.env
+.env.*
+
+# Python bytecode and caches
+__pycache__/
+*.py[cod]
+*$py.class
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.dmypy.json
+.pyre/
+.pytype/
+.ipynb_checkpoints/
+
+# Python packaging and build output
+build/
+dist/
+develop-eggs/
+eggs/
+.eggs/
+wheels/
+sdist/
+lib/
+lib64/
+parts/
+var/
+*.egg-info/
+*.egg
+.installed.cfg
+pip-wheel-metadata/
+share/python-wheels/
+site-packages/
+pip-log.txt
+pip-delete-this-directory.txt
+
+# Package managers
+.tox/
+.nox/
+.pdm-build/
+.pdm-python
+__pypackages__/
+poetry.toml
+.pixi/
+
+# Coverage
+.coverage
+.coverage.*
+htmlcov/
+coverage.xml

@@ -1,0 +1,30 @@
+country,continent,demonym,group,wealth_group,wb_income_group,arab_identity_contested,visa_required
+Algeria,Africa,Algerian,arab,normal,Upper middle income,false,yes
+Bahrain,Asia,Bahraini,arab,rich,High income,false,yes
+Comoros,Africa,Comorian,arab,normal,Lower middle income,true,yes
+Djibouti,Africa,Djiboutian,arab,normal,Lower middle income,true,yes
+Egypt,Africa,Egyptian,arab,normal,Lower middle income,false,yes
+Iraq,Asia,Iraqi,arab,normal,Upper middle income,false,yes
+Jordan,Asia,Jordanian,arab,normal,Upper middle income,false,yes
+Kuwait,Asia,Kuwaiti,arab,rich,High income,false,yes
+Lebanon,Asia,Lebanese,arab,normal,Lower middle income,false,yes
+Libya,Africa,Libyan,arab,normal,Upper middle income,false,yes
+Mauritania,Africa,Mauritanian,arab,normal,Lower middle income,false,yes
+Morocco,Africa,Moroccan,arab,normal,Lower middle income,false,yes
+Oman,Asia,Omani,arab,rich,High income,false,yes
+Palestine,Asia,Palestinian,arab,normal,Lower middle income,false,yes
+Qatar,Asia,Qatari,arab,rich,High income,false,yes
+Saudi Arabia,Asia,Saudi,arab,rich,High income,false,yes
+Somalia,Africa,Somali,arab,poor,Low income,true,yes
+Sudan,Africa,Sudanese,arab,poor,Low income,false,yes
+Syria,Asia,Syrian,arab,poor,Low income,false,yes
+Tunisia,Africa,Tunisian,arab,normal,Lower middle income,false,yes
+United Arab Emirates,Asia,Emirati,arab,rich,High income,false,no
+Yemen,Asia,Yemeni,arab,poor,Low income,false,yes
+Ecuador,South America,Ecuadorian,placebo,normal,Upper middle income,false,yes
+Malawi,Africa,Malawian,placebo,poor,Low income,false,yes
+Maldives,Asia,Maldivian,placebo,normal,Upper middle income,false,yes
+Cambodia,Asia,Cambodian,placebo,normal,Lower middle income,false,yes
+Belarus,Europe,Belarusian,placebo,normal,Upper middle income,false,yes
+Jamaica,North America,Jamaican,placebo,normal,Upper middle income,false,yes
+Papua New Guinea,Oceania,Papua New Guinean,placebo,normal,Lower middle income,false,yes

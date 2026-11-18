@@ -1,0 +1,11 @@
+alias,model_id,extra_body,origin
+gemma-4-31b-it,google/gemma-4-31B-it,,US
+mistral-small-3.2-24b-instruct,mistralai/Mistral-Small-3.2-24B-Instruct-2506,,Europe
+qwen3-32b,Qwen/Qwen3-32B,"{""chat_template_kwargs"": {""enable_thinking"": false}}",China
+olmo-3.1-32b-instruct,allenai/Olmo-3.1-32B-Instruct,,US
+qwen3-14b,Qwen/Qwen3-14B,"{""chat_template_kwargs"": {""enable_thinking"": false}}",China
+qwen3-8b,Qwen/Qwen3-8B,"{""chat_template_kwargs"": {""enable_thinking"": false}}",China
+qwen3-4b,Qwen/Qwen3-4B,"{""chat_template_kwargs"": {""enable_thinking"": false}}",China
+qwen3-1.7b,Qwen/Qwen3-1.7B,"{""chat_template_kwargs"": {""enable_thinking"": false}}",China
+qwen3-0.6b,Qwen/Qwen3-0.6B,"{""chat_template_kwargs"": {""enable_thinking"": false}}",China
+qwen3-32b-think,Qwen/Qwen3-32B,"{""chat_template_kwargs"": {""enable_thinking"": true}}",China

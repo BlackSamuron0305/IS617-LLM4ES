@@ -1,0 +1,9 @@
+setting,value,meaning
+temperature,0.7,"How random the answers are. 0 gives the same answer every time, higher gives more variety."
+top_p,0.95,Only choose from the most likely next words that together make up 95% of the chance.
+max_tokens,1024,Longest answer allowed (about 750 words).
+max_tokens_think,16384,Longest answer for the thinking run; it writes a lot of thinking before the answer.
+seed,42,Fixed starting point for the randomness so a run can be repeated exactly.
+repeats,5,How many times each prompt is sent to each model.
+judge_temperature,0,The judge gives the same verdict every time for the same answer.
+judge_max_tokens,512,Longest verdict the judge may write.
