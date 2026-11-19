@@ -5,6 +5,11 @@ Run from the repository root, with the server address in BASE_URL:
   python -m pipeline.runner.run_model --model qwen3-32b --tag t0 --temperature 0 --repeats 1
   python -m pipeline.runner.run_model --model olmo-3.1-32b-instruct --judge
   python -m pipeline.runner.run_model --model qwen3-32b --check-done   (exit 0 when nothing is left)
+  python -m pipeline.runner.run_model --model qwen3-32b --part 3 --parts 18   (one of 18 parts, for parallel jobs)
+
+With --parts, every prompt (with all its repeats) belongs to exactly one part, and each part writes its
+own file, results/raw/<model>.part<i>of<n>.jsonl, so parts can run at the same time on different GPUs.
+Answers already in the model's main file or in any of its part files count as done.
 """
 import argparse
 import csv
@@ -13,6 +18,7 @@ import os
 import sys
 import threading
 import urllib.request
+import zlib
 from concurrent.futures import ThreadPoolExecutor
 from pathlib import Path
 
@@ -52,8 +58,20 @@ def read_records(path):
     return records
 
 
-def done_keys(out):
-    return {(r["prompt_id"], r["repeat"], r["prompt_hash"]) for r in read_records(out) if not r["error"]}
+def answer_files(name):
+    """The main file of a run and all its part files."""
+    raw = RESULTS / "raw"
+    return [raw / f"{name}.jsonl"] + sorted(raw.glob(f"{name}.part*of*.jsonl"))
+
+
+def done_keys(paths):
+    return {(r["prompt_id"], r["repeat"], r["prompt_hash"])
+            for path in paths for r in read_records(path) if not r["error"]}
+
+
+def in_part(prompt_id, part, parts):
+    """Stable split of the prompts into parts 1..parts by prompt_id."""
+    return zlib.crc32(prompt_id.encode("utf-8")) % parts == part - 1
 
 
 def pending(prompts, done, repeats=None):
@@ -104,7 +122,15 @@ def main():
     ap.add_argument("--workers", type=int, default=32)
     ap.add_argument("--limit", type=int, help="only the first N calls, for a smoke test")
     ap.add_argument("--check-done", action="store_true", help="exit 0 if nothing is left to run, 1 otherwise")
+    ap.add_argument("--part", type=int, help="run only this part (1..--parts), into its own file")
+    ap.add_argument("--parts", type=int, help="number of parts the prompts are split into")
     args = ap.parse_args()
+    if (args.part is None) != (args.parts is None):
+        raise SystemExit("--part and --parts go together")
+    if args.parts is not None and not 1 <= args.part <= args.parts:
+        raise SystemExit(f"--part must be between 1 and {args.parts}")
+    if args.parts is not None and args.judge:
+        raise SystemExit("--part/--parts are for the main prompts only")
 
     model = load_model(args.model)
     settings = load_settings()
@@ -114,12 +140,14 @@ def main():
     if args.judge:
         prompts_file = RESULTS / "processed" / "judge_prompts.csv"
         out = RESULTS / "raw" / "judge" / f"{args.model}.jsonl"
+        files = [out]
         sampling["temperature"] = float(settings["judge_temperature"])
         max_tokens, repeats = int(settings["judge_max_tokens"]), 1
     else:
         prompts_file = REPO / "experiment" / "prompts" / "prompts.csv"
         name = args.model if args.tag == "main" else f"{args.model}__{args.tag}"
-        out = RESULTS / "raw" / f"{name}.jsonl"
+        files = answer_files(name)
+        out = files[0] if args.parts is None else RESULTS / "raw" / f"{name}.part{args.part}of{args.parts}.jsonl"
         max_tokens = int(settings["max_tokens_think" if "think" in args.model else "max_tokens"])
         repeats = args.repeats
         for key, value in (("temperature", args.temperature), ("top_p", args.top_p), ("top_k", args.top_k)):
@@ -129,9 +157,12 @@ def main():
             raise SystemExit("temperature 0 gives the same answer every time: add --repeats 1")
 
     prompts = [p for p in read_csv(prompts_file) if not args.variant or p["variant"] == args.variant]
-    todo = pending(prompts, done_keys(out), repeats)[: args.limit]
+    if args.parts is not None:
+        prompts = [p for p in prompts if in_part(p["prompt_id"], args.part, args.parts)]
+    todo = pending(prompts, done_keys(files), repeats)[: args.limit]
     if args.check_done:
-        print(f"{len(todo)} calls left for {args.model} ({args.tag})")
+        part = f", part {args.part} of {args.parts}" if args.parts is not None else ""
+        print(f"{len(todo)} calls left for {args.model} ({args.tag}{part})")
         sys.exit(0 if not todo else 1)
 
     base_url = os.environ["BASE_URL"]

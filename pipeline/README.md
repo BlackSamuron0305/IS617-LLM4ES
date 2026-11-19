@@ -57,3 +57,19 @@ M=mistral-small-3.2-24b-instruct
 The thinking run uses the weights of `qwen3-32b` with `VLLM_ARGS="--max-model-len 20480"` and `--model qwen3-32b-think`.
 
 Time on one H100 for the 175,000 calls of a model (estimate from the earlier runs): Mistral about 3.5 hours, Qwen3 32B about 5.5, Gemma about 10. With 30-minute jobs, of which a few minutes go to loading the model, that is about 10, 15 and 25 jobs. Before the full run, do a smoke test of a few calls per model: `--limit 50`, then `python -m pipeline.answers.parse_answers` and look at the answers.
+
+### Faster: split a model into parts that run at the same time
+
+When the queue is full, a chain waits again before every job. Instead, split a model's prompts into parts (`--part i --parts n`): every prompt with all its repeats belongs to exactly one part, each part writes its own file `results/raw/<model>.part<i>of<n>.jsonl`, and all parts can run at once on different GPUs. Answers already in the main file or in any part file count as done, and `parse_answers` reads all files of a model together. Never run a chain and parts of the same model at the same time.
+
+Size the parts so one part fits into one 30-minute job (Mistral 12, Qwen3 32B 18, Gemma 36), and submit them as a job array, plus a second array as a backup that only starts after the first and skips every finished part:
+
+```
+M=qwen3-32b; N=18
+RUN="python3 -m pipeline.runner.run_model --model $M --parts $N --part \$SLURM_ARRAY_TASK_ID"
+O="--partition=gpu_h100_short --time=00:30:00 --array=1-$N --export=ALL,MODEL_PATH=$WS/models/$M,MODEL_NAME=$M,ALLOW_REAL_CALLS=yes"
+A=$(SKIP_IF="$RUN --check-done" sbatch --parsable $O cluster/serve_and_run.sbatch bash -c "$RUN")
+SKIP_IF="$RUN --check-done" sbatch --parsable $O --dependency=afterany:$A cluster/serve_and_run.sbatch bash -c "$RUN"
+```
+
+`python3 -m pipeline.runner.run_model --model $M --check-done` (without `--part`) still prints the calls left for the whole model.

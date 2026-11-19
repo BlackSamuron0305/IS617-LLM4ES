@@ -109,19 +109,24 @@ def latest_answers(path):
 def main():
     with open(REPO / "experiment" / "prompts" / "prompts.csv", encoding="utf-8") as f:
         prompts = {p["prompt_id"]: p for p in csv.DictReader(f)}
-    rows, outdated = [], 0
+    # A run's answers can be spread over a main file and part files; keep one answer per call.
+    records, outdated = {}, 0
     for path in sorted((RESULTS / "raw").glob("*.jsonl")):
         for record in latest_answers(path):
             prompt = prompts.get(record["prompt_id"])
             if prompt is None or prompt["prompt_hash"] != record["prompt_hash"]:
                 outdated += 1
                 continue
-            parsed = parse(record["text"], prompt["output"])
-            if record["finish_reason"] == "length" and parsed["status"] != "ok":
-                parsed["status"] = "too_long"
-            rows.append({**{k: record[k] for k in ("model", "run", "temperature", "top_p", "top_k", "prompt_id", "repeat")},
-                         **{k: prompt[k] for k in ("variant", "wording", "applicant_id", "country", "output")},
-                         **parsed})
+            records[(record["model"], record["run"], record["prompt_id"], record["repeat"])] = record
+    rows = []
+    for record in records.values():
+        prompt = prompts[record["prompt_id"]]
+        parsed = parse(record["text"], prompt["output"])
+        if record["finish_reason"] == "length" and parsed["status"] != "ok":
+            parsed["status"] = "too_long"
+        rows.append({**{k: record[k] for k in ("model", "run", "temperature", "top_p", "top_k", "prompt_id", "repeat")},
+                     **{k: prompt[k] for k in ("variant", "wording", "applicant_id", "country", "output")},
+                     **parsed})
     out = RESULTS / "processed" / "answers.csv"
     out.parent.mkdir(parents=True, exist_ok=True)
     with open(out, "w", encoding="utf-8", newline="") as f:
