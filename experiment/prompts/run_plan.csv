@@ -1,0 +1,24 @@
+prompt,output,wordings,repeats
+base,score,1 2 3,5
+approval_norm,score,1,5
+arab_officer,score,1,5
+binary_recommendation,binary,1,5
+discretion,score,1,5
+estonian_officer,score,1,5
+fairness_first,score,1,5
+fairness_last,score,1,5
+few_shot,score,1,5
+few_shot_reversed,score,1,5
+info_rule,score,1,5
+lenient_officer,score,1,5
+minimal,score,1,5
+no_guidance,score,1,5
+realistic_context,score,1,5
+reason_first,score,1,5
+regulation_instruction,score,1,5
+regulation_rule,score,1,5
+regulation_text,score,1,5
+risk_scale,risk,1,5
+score_only,score_only,1,5
+selectivity,score,1,5
+strict_officer,score,1,5

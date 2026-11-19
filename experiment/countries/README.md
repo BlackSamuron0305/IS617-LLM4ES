@@ -1,15 +1,17 @@
 # Country lists
 
-Two lists of nationalities that the experiment puts into the visa application.
+`nationalities.csv` holds every nationality the experiment puts into the visa application, one row per country (35 rows). The `lists` column says which list a country is on; a country can be on both (for example `applicant;conflict`).
 
-| File | What it holds |
+| List | What it holds |
 |---|---|
-| `applicant_nationalities.csv` | The 22 Arab League nationalities plus 7 placebo nationalities, one per continent. Wealth comes from the World Bank. |
-| `conflict_nationalities.csv` | Conflict countries only: every country the ACLED Conflict Index rates *extreme* or *high*. 7 are Arab League members and 23 are reference countries. |
+| `applicant` | The 22 Arab League nationalities plus 7 placebo nationalities from six continents (Maldives and Cambodia are both in Asia). Wealth comes from the World Bank. |
+| `conflict` | Conflict countries only. Arab League members the ACLED Conflict Index rates *extreme* or *high* (7), and non-Arab countries it rates *extreme* (7: 6 reference countries plus the placebo country Ecuador). 14 countries. |
+
+Every column is filled for every row, except `acled_rank` for countries outside ACLED's published top 60 (see below). `visa_required` means a Schengen visa is required, as listed in Regulation (EU) 2018/1806, Annex I (visa required) and Annex II (visa-free); `arab_identity_contested` is `false` for all non-Arab countries. Until 2026-11-18 these were two files, `applicant_nationalities.csv` and `conflict_nationalities.csv`; they are in the git history.
 
 ## Wealth: World Bank income groups
 
-Used in `applicant_nationalities.csv` (`wb_income_group`, `wealth_group`).
+Columns `wb_income_group` and `wealth_group`, filled for all 35 countries (the 6 reference countries were added and checked against the API on 2026-11-18).
 
 - **Source:** the World Bank country classifications by income level for fiscal year 2027. They took effect on 1 July 2026 and apply until 30 June 2027.
   - Thresholds: <https://datahelpdesk.worldbank.org/knowledgebase/articles/906519-world-bank-country-and-lending-groups>
@@ -29,7 +31,7 @@ We merge the two middle groups into one "normal" group, so the comparison is poo
 
 ## Conflict: ACLED Conflict Index
 
-Used in `conflict_nationalities.csv` (`acled_rank`, `acled_level`).
+Columns `acled_rank` and `acled_level`. ACLED's public table ranks only its top 60 countries. Countries in it have both columns (Libya 35 turbulent, Malawi 58 low/inactive). The 18 countries not in it have `acled_level` = `low/inactive` (ACLED rates every country ranked 51 or lower as low/inactive) and an empty `acled_rank`, because ACLED publishes no rank for them.
 
 - **Source:** the ACLED Conflict Index, results of December 2025. ACLED (Armed Conflict Location & Event Data) is a public database of political violence and protest events.
   - Overview and method: <https://acleddata.com/series/acled-conflict-index> and <https://acleddata.com/general-guide/about-conflict-index>
@@ -50,9 +52,26 @@ Used in `conflict_nationalities.csv` (`acled_rank`, `acled_level`).
 | Turbulent | 31 to 50 |
 | Low/Inactive | 51 and lower |
 
-- **Our rule:** a country counts as a conflict country if ACLED rates it *extreme* or *high*. That gives 30 countries; we take all of them, with no selection by hand. ACLED counts all organised violence, including gang violence, which is why Mexico, Brazil, Ecuador and others are on the list. Libya is not on it: ACLED rates it *turbulent* (rank 35).
-- **Checked on 2026-11-18:** all 30 rows match ACLED's table for rank and level, and the level boundaries above match the table (10 extreme, 20 high, 20 turbulent). Equal ranks (for example three countries at 11) are ACLED's own.
+- **Our rule (current, 2026-11-18):** an Arab League country is on the conflict list if ACLED rates it *extreme* or *high* (rank 1 to 30): Palestine, Syria, Sudan, Yemen, Somalia, Lebanon, Iraq. A non-Arab country is on it only if ACLED rates it *extreme* (rank 1 to 10): Myanmar, Mexico, Nigeria, Ecuador, Brazil, Haiti, Pakistan. All of them, with no selection by hand. ACLED counts all organised violence, including gang violence, which is why Mexico, Brazil and Ecuador are on the list. Libya is not on it: ACLED rates it *turbulent* (rank 35).
+- **Earlier rules, the same day:** first *extreme* or *high* for every country (30), then *high* only (20). The 15 non-Arab *high* countries of the second rule (Cameroon, DR Congo, Ukraine, Colombia, India, Guatemala, Russia, Bangladesh, Ethiopia, Kenya, South Sudan, Honduras, Mali, Central African Republic, Burundi) were removed; they are in the git history.
+- **Checked on 2026-11-18:** all 30 extreme and high countries matched ACLED's table for rank and level, and the level boundaries above match the table (10 extreme, 20 high, 20 turbulent). Equal ranks (for example three countries at 11) are ACLED's own.
+
+## Passport strength: Henley Passport Index
+
+Columns `passport_rank` and `passport_visa_free`, filled for all 35 countries (for the 6 reference countries added later, from the same API's 2026 entries).
+
+- **Source:** the Henley Passport Index, 2026 data, taken on 2026-11-18 from <https://api.henleypassportindex.com/api/v3/countries> (the data behind <https://www.henleyglobal.com/passport-index/ranking>).
+- **Scale:** `passport_visa_free` is the number of destinations (out of 227) a holder can enter without a visa obtained in advance. `passport_rank` follows from it: 1 is the strongest passport (Singapore, 193), 104 the weakest (Afghanistan, 22). Countries with the same count share a rank.
 
 ## Overlaps to keep in mind
 
-- Jamaica (ACLED rank 28, high) and Papua New Guinea (on the World Bank's 2027 conflict list, not ranked by ACLED) are placebo countries in `applicant_nationalities.csv`.
+- Ecuador (ACLED rank 6, extreme) is a placebo country and on the conflict list. Jamaica (rank 28, high) is a placebo country but not on the conflict list, since non-Arab countries need *extreme*. Papua New Guinea (on the World Bank's 2027 conflict list, not ranked by ACLED) is a placebo country.
+
+## Same rules for every nationality (checked 2026-11-19)
+
+The design needs the rules for a tourist visa to Estonia to be the same for every nationality that needs a visa. Checked so far:
+
+- **Travel documents.** The EU list of travel documents that Member States recognise (Part I, notifications until 16 November 2026, <https://home-affairs.ec.europa.eu/travel-documents-issued-third-countries-and-territorial-entities-part-i_en>; the Estonia column of the XLSX was read cell by cell). Estonia recognises the ordinary passport of all 35 countries. Two carry a condition that a current passport meets: Somalia ("The new travel document issued as from 1/2/2007 are recognised") and Algeria ("Only passports in which the validity is not extended"). The Palestinian passport is recognised without comment. The colour key (green recognised, red not, yellow no position) is from the Belgian immigration office, <https://dofi.ibz.be/en/themes/entry/border-control/travel-documents/list-recognised-travel-documents>, as the file has none.
+- **Belarus.** Estonia restricts visas for Russian citizens for all purposes, but for Belarusian citizens only for short-term work, business and teleworking, not for tourism (<https://www.vm.ee/en/consular-visa-and-travel-information/visa-information/restrictions-accepting-visa-applications>, page undated). Belarus stays a placebo. The embassy in Minsk takes no visa applications, which does not matter for applicants who apply in the UAE.
+- **Prior consultation (Article 22 of the Visa Code).** Annex 16 of the Visa Code Handbook (version 1 November 2024, <https://home-affairs.ec.europa.eu/document/download/e6139169-6ec7-4374-a50a-eb2333411e3f_en>) lists the countries for which at least one Member State requires prior consultation, without naming the Member State. 15 Arab League countries are on it (Algeria, Egypt, Iraq, Jordan, Lebanon, Libya, Mauritania, Morocco, Palestine, Saudi Arabia, Somalia, Sudan, Syria, Tunisia, Yemen), 7 are not (Bahrain, Comoros, Djibouti, Kuwait, Oman, Qatar, UAE); of the others, Nigeria, Pakistan and Belarus are on it. Whether Estonia itself consults for any of them cannot be checked from public sources. Prior consultation changes the procedure (other states may object), not the grounds for refusal; it is a limit to state.
+- **Not checked:** Article 25a visa measures.

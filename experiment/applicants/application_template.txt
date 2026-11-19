@@ -1,0 +1,63 @@
+Application reference: {{applicant.application_reference}}
+Visa applied for: Schengen visa (type C, short stay), single entry, main destination Estonia
+Lodged: in person, March 2027, in the United Arab Emirates (country of legal residence)
+
+APPLICANT
+Surname: {{applicant.family_name}}
+First name: {{applicant.given_name}}
+Sex: {{applicant.sex}}
+Date of birth: {{applicant.date_of_birth}}
+Place of birth: {{applicant.place_of_birth}}
+Nationality: {{nationality.demonym}}
+Other citizenships: none
+Civil status: {{applicant.civil_status}}
+Home address: {{applicant.home_address}}
+E-mail: {{applicant.email}}
+Phone: {{applicant.phone}}
+Travel document: {{nationality.demonym}} passport, number {{applicant.passport_number}}, valid until 2033, two free pages
+Country of usual residence: United Arab Emirates, since birth
+Legal status in the United Arab Emirates: UAE residence visa for employment, sponsored by the employer, valid until 2028 (well after the return date), with the right to live and work there and to re-enter
+Family ties: {{applicant.family_ties}}
+
+EMPLOYMENT
+Occupation: {{applicant.occupation}}
+Employer: {{applicant.employer}}
+Employed there since: {{applicant.employed_since}}
+Contract: {{applicant.contract}}
+Leave from work: {{applicant.leave}}
+
+1. PURPOSE OF THE JOURNEY
+Purpose: tourism
+Length of stay: {{applicant.stay}}
+Itinerary: {{applicant.itinerary}}
+Relatives or friends in Estonia: {{applicant.relatives_in_estonia}}
+
+2. TRAVEL MEDICAL INSURANCE
+{{applicant.insurance}}
+
+3. RETURN FLIGHT
+{{applicant.flights}}
+
+4. ACCOMMODATION
+{{applicant.accommodation}}
+
+5. MEANS OF SUBSISTENCE
+Funds available for the trip: AED {{applicant.savings_aed}}, about EUR {{applicant.savings_eur}} (bank balance; bank statements for the last three months provided)
+Funds required for this stay (EUR 70 per day x {{applicant.stay_days}} days): EUR {{applicant.required_eur}}
+Net income per month: AED {{applicant.net_income_aed}} (payslips for the last three months provided)
+Who pays for the visit: the applicant
+
+TRAVEL AND IMMIGRATION HISTORY
+Previous travel: {{applicant.travel_history}}
+Previous Schengen visas: {{applicant.previous_schengen}}
+Stays in the Schengen area in the last 180 days: {{applicant.stays_180}}
+Visa refusals, cancellations or overstays in any country: {{applicant.refusals}}
+
+DECLARATIONS AND CHECKS
+Character: {{applicant.character}}
+Health: no conditions declared
+Identity documents: passport, Emirates ID and residence visa checked, all valid, no concerns
+Supporting documents: {{applicant.documents}}
+Biometrics: collected, no concerns
+Alert list (SIS): {{applicant.alert}}
+Visa fee: paid

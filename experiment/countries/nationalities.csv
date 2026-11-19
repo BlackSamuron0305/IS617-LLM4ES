@@ -1,0 +1,36 @@
+country,continent,demonym,group,wealth_group,wb_income_group,arab_identity_contested,visa_required,acled_rank,acled_level,passport_rank,passport_visa_free,lists
+Algeria,Africa,Algerian,arab,normal,Upper middle income,false,yes,,low/inactive,82,54,applicant
+Bahrain,Asia,Bahraini,arab,rich,High income,false,yes,,low/inactive,57,87,applicant
+Comoros,Africa,Comorian,arab,normal,Lower middle income,true,yes,,low/inactive,85,50,applicant
+Djibouti,Africa,Djiboutian,arab,normal,Lower middle income,true,yes,,low/inactive,90,44,applicant
+Egypt,Africa,Egyptian,arab,normal,Lower middle income,false,yes,,low/inactive,86,49,applicant
+Iraq,Asia,Iraqi,arab,normal,Upper middle income,false,yes,22,high,102,28,applicant;conflict
+Jordan,Asia,Jordanian,arab,normal,Upper middle income,false,yes,,low/inactive,85,50,applicant
+Kuwait,Asia,Kuwaiti,arab,rich,High income,false,yes,,low/inactive,52,97,applicant
+Lebanon,Asia,Lebanese,arab,normal,Lower middle income,false,yes,19,high,93,40,applicant;conflict
+Libya,Africa,Libyan,arab,normal,Upper middle income,false,yes,35,turbulent,94,38,applicant
+Mauritania,Africa,Mauritanian,arab,normal,Lower middle income,false,yes,,low/inactive,81,55,applicant
+Morocco,Africa,Moroccan,arab,normal,Lower middle income,false,yes,,low/inactive,68,69,applicant
+Oman,Asia,Omani,arab,rich,High income,false,yes,,low/inactive,59,84,applicant
+Palestine,Asia,Palestinian,arab,normal,Lower middle income,false,yes,1,extreme,96,36,applicant;conflict
+Qatar,Asia,Qatari,arab,rich,High income,false,yes,,low/inactive,48,112,applicant
+Saudi Arabia,Asia,Saudi,arab,rich,High income,false,yes,,low/inactive,55,89,applicant
+Somalia,Africa,Somali,arab,poor,Low income,true,yes,17,high,99,32,applicant;conflict
+Sudan,Africa,Sudanese,arab,poor,Low income,false,yes,8,extreme,93,40,applicant;conflict
+Syria,Asia,Syrian,arab,poor,Low income,false,yes,3,extreme,103,25,applicant;conflict
+Tunisia,Africa,Tunisian,arab,normal,Lower middle income,false,yes,,low/inactive,72,65,applicant
+United Arab Emirates,Asia,Emirati,arab,rich,High income,false,no,,low/inactive,2,188,applicant
+Yemen,Asia,Yemeni,arab,poor,Low income,false,yes,15,high,100,30,applicant;conflict
+Ecuador,South America,Ecuadorian,placebo,normal,Upper middle income,false,yes,6,extreme,54,90,applicant;conflict
+Malawi,Africa,Malawian,placebo,poor,Low income,false,yes,58,low/inactive,68,69,applicant
+Maldives,Asia,Maldivian,placebo,normal,Upper middle income,false,yes,,low/inactive,53,92,applicant
+Cambodia,Asia,Cambodian,placebo,normal,Lower middle income,false,yes,,low/inactive,88,47,applicant
+Belarus,Europe,Belarusian,placebo,normal,Upper middle income,false,yes,,low/inactive,63,77,applicant
+Jamaica,North America,Jamaican,placebo,normal,Upper middle income,false,yes,28,high,60,82,applicant
+Papua New Guinea,Oceania,Papua New Guinean,placebo,normal,Lower middle income,false,yes,,low/inactive,60,82,applicant
+Myanmar,Asia,Burmese,reference,normal,Lower middle income,false,yes,2,extreme,92,42,conflict
+Mexico,North America,Mexican,reference,normal,Upper middle income,false,no,4,extreme,23,154,conflict
+Nigeria,Africa,Nigerian,reference,normal,Lower middle income,false,yes,5,extreme,90,44,conflict
+Brazil,South America,Brazilian,reference,normal,Upper middle income,false,no,7,extreme,15,170,conflict
+Haiti,North America,Haitian,reference,normal,Lower middle income,false,yes,8,extreme,87,48,conflict
+Pakistan,Asia,Pakistani,reference,normal,Lower middle income,false,yes,10,extreme,101,29,conflict

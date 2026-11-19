@@ -3723,3 +3723,140 @@
   strand       = {islamophobia_context},
   annote       = {COMPANY STATEMENT, text read directly from X: `We agree that the results for these types of searches aren't what they should be, and we're working on improvements. Results can vary a lot from search to search (see screenshot) -- and these inconsistent warnings aren't unique to any one group.' A reply to another user, not to the post about the search for a Muslim}
 }
+
+% --- Data sources for the nationality list (added 2026-11-18; see experiment/countries/README.md) ---
+
+@misc{worldbank2026income,
+  author       = {{World Bank}},
+  title        = {World Bank Country Classifications by Income Level for Fiscal Year 2027},
+  year         = {2026},
+  howpublished = {World Bank Data Help Desk},
+  url          = {https://datahelpdesk.worldbank.org/knowledgebase/articles/906519-world-bank-country-and-lending-groups},
+  note         = {Valid 1 July 2026 to 30 June 2027; groups read from https://api.worldbank.org/v2/country on 18 November 2026},
+  verification = {fulltext},
+  strand       = {data_source},
+  annote       = {DATA SOURCE. Income groups by GNI per capita 2025, Atlas method. Used for wb_income_group and wealth_group}
+}
+
+@misc{acled2025conflictindex,
+  author       = {{Armed Conflict Location \& Event Data (ACLED)}},
+  title        = {{ACLED} Conflict Index: December 2025},
+  year         = {2025},
+  howpublished = {ACLED},
+  url          = {https://acleddata.com/series/acled-conflict-index},
+  note         = {Events 1 December 2024 to 28 November 2025; ranking table https://apps.acleddata.com/conflictindex2025/newindextable2025.csv, read on 18 November 2026},
+  verification = {fulltext},
+  strand       = {data_source},
+  annote       = {DATA SOURCE. Ranks countries on deadliness, danger, diffusion and fragmentation. Used for acled_rank, acled_level and the conflict list}
+}
+
+@misc{henley2026passportindex,
+  author       = {{Henley \& Partners}},
+  title        = {The {Henley} Passport Index 2026},
+  year         = {2026},
+  howpublished = {Henley \& Partners},
+  url          = {https://www.henleyglobal.com/passport-index/ranking},
+  note         = {Data from https://api.henleypassportindex.com/api/v3/countries, read on 18 November 2026},
+  verification = {fulltext},
+  strand       = {data_source},
+  annote       = {DATA SOURCE. Destinations reachable without a prior visa (out of 227), based on IATA data. Used for passport_rank and passport_visa_free}
+}
+
+% Added 2026-11-18: sources for the run settings (report, Methods, note "run settings").
+@misc{renze2024effect,
+  author        = {Renze, Matthew and Guven, Erhan},
+  title         = {The Effect of Sampling Temperature on Problem Solving in Large Language Models},
+  year          = {2024},
+  eprint        = {2402.05201},
+  archiveprefix = {arXiv},
+  verification  = {abstract},
+  annote        = {Read through a summarising fetch of the arXiv HTML (Section 2.3, abstract). Check the full text before citing a number.}
+}
+
+@misc{qwen2025qwen3card,
+  author       = {{Qwen Team}},
+  title        = {{Qwen3-32B} Model Card},
+  year         = {2025},
+  howpublished = {\url{https://huggingface.co/Qwen/Qwen3-32B}},
+  note         = {Hugging Face; accessed 18 November 2026},
+  verification = {fulltext},
+  annote       = {Best Practices, 1. Sampling Parameters: thinking Temperature=0.6, TopP=0.95, TopK=20, MinP=0; non-thinking Temperature=0.7, TopP=0.8, TopK=20, MinP=0; DO NOT use greedy decoding. 2. Adequate Output Length: 32,768 tokens. Qwen3-8B card identical.}
+}
+
+@misc{google2026gemma4card,
+  author       = {{Google}},
+  title        = {{Gemma 4 31B IT} Model Card},
+  year         = {2026},
+  howpublished = {\url{https://huggingface.co/google/gemma-4-31B-it}},
+  note         = {Hugging Face; accessed 18 November 2026},
+  verification = {fulltext},
+  annote       = {Best Practices, 1. Sampling Parameters: temperature=1.0, top_p=0.95, top_k=64 across all use cases. Year is the access year; check the release date.}
+}
+
+@misc{mistral2025small32card,
+  author       = {{Mistral AI}},
+  title        = {{Mistral-Small-3.2-24B-Instruct-2506} Model Card},
+  year         = {2025},
+  howpublished = {\url{https://huggingface.co/mistralai/Mistral-Small-3.2-24B-Instruct-2506}},
+  note         = {Hugging Face; accessed 18 November 2026},
+  verification = {fulltext},
+  annote       = {Usage, Note 1: We recommend using a relatively low temperature, such as temperature=0.15. No top_p or top_k given.}
+}
+
+@misc{allenai2025olmo31card,
+  author       = {{Allen Institute for AI}},
+  title        = {{Olmo-3.1-32B-Instruct} Model Card},
+  year         = {2025},
+  howpublished = {\url{https://huggingface.co/allenai/Olmo-3.1-32B-Instruct}},
+  note         = {Hugging Face; accessed 18 November 2026},
+  verification = {fulltext},
+  annote       = {No sampling recommendation. Inference example only: max_new_tokens=100, do_sample=True, top_k=50, top_p=0.95. Check the release year.}
+}
+
+@misc{vllm2026docs,
+  author       = {{vLLM Project}},
+  title        = {{OpenAI}-Compatible Server and {SamplingParams}, {vLLM} Documentation},
+  year         = {2026},
+  howpublished = {\url{https://docs.vllm.ai/en/latest/serving/online_serving/openai_compatible_server/}},
+  note         = {Accessed 18 November 2026},
+  verification = {fulltext},
+  annote       = {By default, the server applies generation_config.json from the Hugging Face model repository if it exists (overridden with --generation-config vllm). SamplingParams: seed, Random seed to use for the generation. No reproducibility guarantee stated.}
+}
+
+@inproceedings{shaikh2023second,
+  author        = {Shaikh, Omar and Zhang, Hongxin and Held, William and Bernstein, Michael and Yang, Diyi},
+  title         = {On Second Thought, Let's Not Think Step by Step! Bias and Toxicity in Zero-Shot Reasoning},
+  booktitle     = {Proceedings of the 61st Annual Meeting of the Association for Computational Linguistics (Volume 1: Long Papers)},
+  pages         = {4454--4470},
+  year          = {2023},
+  url           = {https://aclanthology.org/2023.acl-long.244},
+  verification  = {abstract},
+  strand        = {audit_method},
+  annote        = {Abstract read on 2026-10-25. Zero-shot chain-of-thought in socially sensitive domains makes models significantly more likely to produce harmful or undesirable output, including on stereotype benchmarks. Used to justify the reasoning variant}
+}
+
+@inproceedings{turpin2023language,
+  author        = {Turpin, Miles and Michael, Julian and Perez, Ethan and Bowman, Samuel R.},
+  title         = {Language Models Don't Always Say What They Think: Unfaithful Explanations in Chain-of-Thought Prompting},
+  booktitle     = {Advances in Neural Information Processing Systems (NeurIPS)},
+  year          = {2023},
+  eprint        = {2305.04388},
+  archiveprefix = {arXiv},
+  verification  = {abstract},
+  strand        = {audit_method},
+  annote        = {Abstract read on 2026-10-25. Biasing features in the input shape chain-of-thought explanations, but models rarely mention them; on a social-bias task the explanations justify stereotype-consistent answers without naming the bias. Used to say that the reasoning and reason fields are not faithful explanations}
+}
+
+@inproceedings{zhao2021calibrate,
+  author        = {Zhao, Tony Z. and Wallace, Eric and Feng, Shi and Klein, Dan and Singh, Sameer},
+  title         = {Calibrate Before Use: Improving Few-Shot Performance of Language Models},
+  booktitle     = {Proceedings of the 38th International Conference on Machine Learning (ICML)},
+  series        = {Proceedings of Machine Learning Research},
+  volume        = {139},
+  pages         = {12697--12706},
+  year          = {2021},
+  url           = {https://arxiv.org/abs/2102.09690},
+  verification  = {abstract},
+  strand        = {audit_method},
+  annote        = {Abstract read on 2026-11-18. The choice of prompt format, of the few-shot examples and even their order moves GPT-3's accuracy from near chance to near state of the art; majority-label and recency bias pull answers towards labels that are frequent or near the end of the prompt. Used for the few_shot variants in both orders}
+}

@@ -1,11 +1,11 @@
-alias,model_id,extra_body,origin
-gemma-4-31b-it,google/gemma-4-31B-it,,US
-mistral-small-3.2-24b-instruct,mistralai/Mistral-Small-3.2-24B-Instruct-2506,,Europe
-qwen3-32b,Qwen/Qwen3-32B,"{""chat_template_kwargs"": {""enable_thinking"": false}}",China
-olmo-3.1-32b-instruct,allenai/Olmo-3.1-32B-Instruct,,US
-qwen3-14b,Qwen/Qwen3-14B,"{""chat_template_kwargs"": {""enable_thinking"": false}}",China
-qwen3-8b,Qwen/Qwen3-8B,"{""chat_template_kwargs"": {""enable_thinking"": false}}",China
-qwen3-4b,Qwen/Qwen3-4B,"{""chat_template_kwargs"": {""enable_thinking"": false}}",China
-qwen3-1.7b,Qwen/Qwen3-1.7B,"{""chat_template_kwargs"": {""enable_thinking"": false}}",China
-qwen3-0.6b,Qwen/Qwen3-0.6B,"{""chat_template_kwargs"": {""enable_thinking"": false}}",China
-qwen3-32b-think,Qwen/Qwen3-32B,"{""chat_template_kwargs"": {""enable_thinking"": true}}",China
+alias,model_id,revision,extra_body,vllm_args,origin
+gemma-4-31b-it,google/gemma-4-31B-it,842da3794eaa0b77d5f08bae87a17459d91ff475,,,US
+mistral-small-3.2-24b-instruct,mistralai/Mistral-Small-3.2-24B-Instruct-2506,95a6d26c4bfb886c58daf9d3f7332c857cb27b43,,--tokenizer-mode mistral --config-format mistral --load-format mistral,Europe
+qwen3-32b,Qwen/Qwen3-32B,9216db5781bf21249d130ec9da846c4624c16137,"{""chat_template_kwargs"": {""enable_thinking"": false}}",,China
+olmo-3.1-32b-instruct,allenai/Olmo-3.1-32B-Instruct,ac0587e4a7744a551c059d8cd17ba220bc940dae,,,US
+qwen3-14b,Qwen/Qwen3-14B,40c069824f4251a91eefaf281ebe4c544efd3e18,"{""chat_template_kwargs"": {""enable_thinking"": false}}",,China
+qwen3-8b,Qwen/Qwen3-8B,b968826d9c46dd6066d109eabc6255188de91218,"{""chat_template_kwargs"": {""enable_thinking"": false}}",,China
+qwen3-4b,Qwen/Qwen3-4B,1cfa9a7208912126459214e8b04321603b3df60c,"{""chat_template_kwargs"": {""enable_thinking"": false}}",,China
+qwen3-1.7b,Qwen/Qwen3-1.7B,,"{""chat_template_kwargs"": {""enable_thinking"": false}}",,China
+qwen3-0.6b,Qwen/Qwen3-0.6B,,"{""chat_template_kwargs"": {""enable_thinking"": false}}",,China
+qwen3-32b-think,Qwen/Qwen3-32B,9216db5781bf21249d130ec9da846c4624c16137,"{""chat_template_kwargs"": {""enable_thinking"": true}}",--max-model-len 20480,China
