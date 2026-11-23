@@ -7,9 +7,9 @@ One folder per step, in the order they run. Run every command from the repositor
 | 1. Build prompts | `python -m pipeline.prompt_builder.build_prompts` | `experiment/prompts/` (prompt files, `run_plan.csv`), `experiment/applicants/` (`application_template.txt`, `applicants.csv`), `experiment/countries/nationalities.csv` | `experiment/prompts/prompts.csv` |
 | 2. Run a model (cluster) | `python -m pipeline.runner.run_model --model qwen3-32b` | `prompts.csv`, `experiment/config/` | `results/raw/<model>.jsonl` |
 | 3. Read the answers | `python -m pipeline.answers.parse_answers` | `results/raw/*.jsonl` | `results/processed/answers.csv` |
-| 4. Build judge prompts | `python -m pipeline.judge.build_judge_prompts` | `answers.csv`, `experiment/judge/judge_prompt.txt` | `results/processed/judge_prompts.csv` |
-| 5. Run the judge (cluster) | `python -m pipeline.runner.run_model --model <judge> --judge` | `judge_prompts.csv` | `results/raw/judge/<judge>.jsonl` |
-| 6. Read the judge codes | `python -m pipeline.judge.parse_judge --judge <judge>` | `results/raw/judge/<judge>.jsonl` | `results/processed/judge_codes.csv` |
+| 4. Build judge prompts | `python -m pipeline.judge.build_judge_prompts` | `answers.csv`, `experiment/judge/judge_prompt.txt` | `results/processed/judge_prompts.csv` (one per distinct prompt), `judge_links.csv` (answer to prompt) |
+| 5. Run the judge (cluster) | `python -m pipeline.runner.run_model --model olmo-3.1-32b-instruct --judge [--part i --parts n]` | `judge_prompts.csv` | `results/raw/judge/<judge>.jsonl` or `.part<i>of<n>.jsonl` |
+| 6. Read the judge codes | `python -m pipeline.judge.parse_judge --judge olmo-3.1-32b-instruct` | `results/raw/judge/<judge>*.jsonl`, `judge_links.csv` | `results/processed/judge_codes.csv` |
 | 7. Analysis | the notebooks in `pipeline/analysis/notebooks/` | `results/processed/` | `results/figures/` |
 
 ## Notes

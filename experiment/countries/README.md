@@ -5,7 +5,7 @@
 | List | What it holds |
 |---|---|
 | `applicant` | The 22 Arab League nationalities plus 7 placebo nationalities from six continents (Maldives and Cambodia are both in Asia). Wealth comes from the World Bank. |
-| `conflict` | Conflict countries only. Arab League members the ACLED Conflict Index rates *extreme* or *high* (7), and non-Arab countries it rates *extreme* (7: 6 reference countries plus the placebo country Ecuador). 14 countries. |
+| `conflict` | Conflict countries only: every country the ACLED Conflict Index rates *extreme*. Arab League members (3: Palestine, Sudan, Syria) and non-Arab countries (7: 6 reference countries plus the placebo country Ecuador). 10 countries. |
 
 Every column is filled for every row, except `acled_rank` for countries outside ACLED's published top 60 (see below). `visa_required` means a Schengen visa is required, as listed in Regulation (EU) 2018/1806, Annex I (visa required) and Annex II (visa-free); `arab_identity_contested` is `false` for all non-Arab countries. Until 2026-11-18 these were two files, `applicant_nationalities.csv` and `conflict_nationalities.csv`; they are in the git history.
 
@@ -52,8 +52,8 @@ Columns `acled_rank` and `acled_level`. ACLED's public table ranks only its top 
 | Turbulent | 31 to 50 |
 | Low/Inactive | 51 and lower |
 
-- **Our rule (current, 2026-11-18):** an Arab League country is on the conflict list if ACLED rates it *extreme* or *high* (rank 1 to 30): Palestine, Syria, Sudan, Yemen, Somalia, Lebanon, Iraq. A non-Arab country is on it only if ACLED rates it *extreme* (rank 1 to 10): Myanmar, Mexico, Nigeria, Ecuador, Brazil, Haiti, Pakistan. All of them, with no selection by hand. ACLED counts all organised violence, including gang violence, which is why Mexico, Brazil and Ecuador are on the list. Libya is not on it: ACLED rates it *turbulent* (rank 35).
-- **Earlier rules, the same day:** first *extreme* or *high* for every country (30), then *high* only (20). The 15 non-Arab *high* countries of the second rule (Cameroon, DR Congo, Ukraine, Colombia, India, Guatemala, Russia, Bangladesh, Ethiopia, Kenya, South Sudan, Honduras, Mali, Central African Republic, Burundi) were removed; they are in the git history.
+- **Our rule (current, 2026-11-19, Laith):** a country is on the conflict list only if ACLED rates it *extreme* (rank 1 to 10), the same rule for Arab League and non-Arab countries. Arab League: Palestine, Syria, Sudan. Non-Arab: Myanmar, Mexico, Nigeria, Ecuador, Brazil, Haiti, Pakistan. All of them, with no selection by hand. Yemen, Somalia, Lebanon and Iraq (ACLED *high*) stay applicant nationalities but are not on the conflict list; their `acled_level` column still says *high*. ACLED counts all organised violence, including gang violence, which is why Mexico, Brazil and Ecuador are on the list. Libya is not on it: ACLED rates it *turbulent* (rank 35).
+- **Earlier rules:** on 2026-11-18 first *extreme* or *high* for every country (30), then *high* only (20), then *extreme* or *high* for Arab League members and *extreme* for the others (14); replaced on 2026-11-19 by *extreme* only for everyone. The list is an analysis label only: no prompt depends on it. The 15 non-Arab *high* countries of the second rule (Cameroon, DR Congo, Ukraine, Colombia, India, Guatemala, Russia, Bangladesh, Ethiopia, Kenya, South Sudan, Honduras, Mali, Central African Republic, Burundi) were removed; they are in the git history.
 - **Checked on 2026-11-18:** all 30 extreme and high countries matched ACLED's table for rank and level, and the level boundaries above match the table (10 extreme, 20 high, 20 turbulent). Equal ranks (for example three countries at 11) are ACLED's own.
 
 ## Passport strength: Henley Passport Index
@@ -65,7 +65,7 @@ Columns `passport_rank` and `passport_visa_free`, filled for all 35 countries (f
 
 ## Overlaps to keep in mind
 
-- Ecuador (ACLED rank 6, extreme) is a placebo country and on the conflict list. Jamaica (rank 28, high) is a placebo country but not on the conflict list, since non-Arab countries need *extreme*. Papua New Guinea (on the World Bank's 2027 conflict list, not ranked by ACLED) is a placebo country.
+- Ecuador (ACLED rank 6, extreme) is a placebo country and on the conflict list. Jamaica (rank 28, high) is a placebo country but not on the conflict list, since the list needs *extreme*. Papua New Guinea (on the World Bank's 2027 conflict list, not ranked by ACLED) is a placebo country.
 
 ## Same rules for every nationality (checked 2026-11-19)
 

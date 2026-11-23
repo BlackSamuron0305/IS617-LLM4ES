@@ -1,6 +1,6 @@
 import pandas as pd
 
-from pipeline.analysis.stats import effects, permutation_p, spread
+from pipeline.analysis.stats import deviations, effects, permutation_p, spread, wealth_rho
 
 
 def answers(syria_penalty):
@@ -22,3 +22,15 @@ def test_effects_remove_the_applicant_level():
 def test_permutation_finds_a_planted_gap_and_not_a_missing_one():
     assert permutation_p(answers(6), spread, n=200)[1] < 0.05
     assert permutation_p(answers(0), spread, n=200)[1] > 0.05
+
+
+def test_wealth_rho_takes_the_wealth_from_the_country_not_from_the_row():
+    # Syria poor, Jordan normal, Qatar rich. The permutation test shuffles only the country labels,
+    # so a wealth_group column left on the rows no longer belongs to the country: it must be ignored.
+    df = deviations(answers(syria_penalty=6))
+    df["visa_score"] += df["country"].map({"Qatar": 3, "Jordan": 0, "Syria": 0})
+    df = deviations(df)
+    df["wealth_group"] = "normal"
+    assert round(wealth_rho(df), 6) == 1
+    p = permutation_p(df.drop(columns="deviation"), wealth_rho, n=200)[1]
+    assert p > 0.05  # three countries: a perfect order happens by chance one time in six

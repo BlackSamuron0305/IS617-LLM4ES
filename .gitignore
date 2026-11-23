@@ -68,3 +68,6 @@ experiment/prompts/prompts.csv
 
 # Raw model answers (hundreds of MB); keep a backup outside git
 results/raw/
+
+# Processed tables (up to 1.2 GB each); download from the GitHub Release or rebuild with the pipeline
+results/processed/*.csv

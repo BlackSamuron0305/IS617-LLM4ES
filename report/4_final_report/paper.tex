@@ -163,8 +163,8 @@ The bibliography is \texttt{custom.bib}; check each source against the full text
         actually run.
   \item \textbf{Nationalities} (\texttt{experiment/countries/nationalities.csv}): the 22 Arab
         League nationalities and 7 placebo nationalities from six continents; a conflict list of
-        14 countries (Arab League members ACLED rates \emph{extreme} or \emph{high}, non-Arab
-        countries it rates \emph{extreme}). Same rules checked: Estonia recognises the passports of
+        10 countries, every country ACLED rates \emph{extreme}: 3 Arab League members (Palestine,
+        Sudan, Syria) and 7 non-Arab countries (6 reference countries and the placebo Ecuador). Same rules checked: Estonia recognises the passports of
         all 35 countries (EU list of travel documents, November 2026); 15 of the 22 Arab League
         countries are on the list for which at least one Member State asks for prior consultation
         (Visa Code Handbook, Annex 16), whether Estonia does is not public: a limit to state. \textbf{No country is grouped by our own
@@ -184,9 +184,11 @@ The bibliography is \texttt{custom.bib}; check each source against the full text
   \item \textbf{Prompts:} base prompt and variants in \texttt{experiment/prompts/}; every prompt
         is built by \texttt{pipeline/prompt\_builder/}. Report the number of prompts as wordings
         $\times$ applicants $\times$ nationalities.
-  \item \textbf{Models} (\texttt{experiment/config/models.csv}): Gemma 4 31B, Mistral Small 3.2
-        24B, Qwen3 32B, OLMo 3.1 32B, Qwen3 0.6B to 14B, Qwen3 32B with thinking. Open weights,
-        served with vLLM on bwUniCluster. Pin each model's revision and report it.
+  \item \textbf{Models} (\texttt{experiment/config/models.csv}): audited are Gemma 4 31B, Mistral
+        Small 3.2 24B, Qwen3 32B (the three main models), Qwen3 0.6B to 14B and Qwen3 32B with
+        thinking. OLMo 3.1 32B is the judge only and is not audited, so no model judges its own
+        reasons (team decision, 2026-11-20). Open weights, served with vLLM on bwUniCluster. Pin
+        each model's revision and report it.
   \item \textbf{Sampling} (\texttt{experiment/config/run\_settings.csv}): temperature 0.7,
         top\_p 0.95, at most 1,024 new tokens (16,384 with thinking), seed 42, 5 repetitions.
   \item Descriptive statistics to give: answers per model, unreadable answers, mean score and
@@ -210,14 +212,15 @@ The bibliography is \texttt{custom.bib}; check each source against the full text
         permutation). \textbf{RQ4:} savings that offset a passport's effect.
   \item \textbf{Instrument check:} the score must drop when the funds do not cover the stay;
         otherwise the model ignores the rules and its gaps say little.
-  \item \textbf{Judge} (\texttt{experiment/judge/}): a second model reads only the reason, with
-        the nationality hidden, and answers eight yes/no questions (mentions the nationality;
+  \item \textbf{Judge} (\texttt{experiment/judge/}): a second model, OLMo 3.1 32B (not one of the
+        audited models), reads only the reason, with the nationality hidden, and answers eight yes/no questions (mentions the nationality;
         treats it as a concern; says a ground applies; any concern; doubts the money; calls the
         money sufficient; doubts ties or return; raises an unsupported concern). Built from 180
         reasons of the three main models in the earlier runs and the earlier judge comparison; two
         vague codes were dropped because judges disagreed. Whether a claim about money is right is
-        computed from the application, not by the judge. Codes are reported only after a
-        hand-coded check.
+        computed from the application, not by the judge. With the nationality hidden, the same
+        reason for the same application gives the same judge prompt; such answers share one judge
+        call (about 3 answers per call). Codes are reported only after a hand-coded check.
   \item \textbf{How the judge questions were chosen (selected manual checks).} Before writing
         the questions, 180 reasons from the earlier runs were read one by one: 60 each from Gemma 4
         31B, Mistral Small 3.2 24B and Qwen3 32B, drawn at random within chosen groups (poor
@@ -265,7 +268,8 @@ The bibliography is \texttt{custom.bib}; check each source against the full text
                 thinking and 0.6 with it, and ``DO NOT use greedy decoding''
                 (\texttt{qwen2025qwen3card}); Gemma~4 1.0 (\texttt{google2026gemma4card}); Mistral
                 Small 3.2 ``a relatively low temperature, such as 0.15''
-                (\texttt{mistral2025small32card}); OLMo~3.1 none (\texttt{allenai2025olmo31card}).
+                (\texttt{mistral2025small32card}). (OLMo~3.1, the judge, runs at temperature 0;
+                its card gives no recommendation, \texttt{allenai2025olmo31card}.)
                 Across problem-solving tasks, temperatures from 0 to 1 made no significant difference
                 (\texttt{renze2024effect}, A). Earlier design: the gap was the same at 0, 0.3, 0.7
                 and 1.0 for Qwen3 32B and Gemma~4, but grew with temperature for Mistral Small (0.9
@@ -274,7 +278,7 @@ The bibliography is \texttt{custom.bib}; check each source against the full text
                 the main run or switch to 0 like the audits.
           \item \emph{top\_p 0.95 and top\_k off: partly backed, so tested.} 0.95 is Gemma~4's value
                 and Qwen3's with thinking; Qwen3 without thinking recommends 0.8 and top\_k 20, Gemma~4
-                top\_k 64; Mistral and OLMo give none. top\_k is set explicitly because vLLM otherwise
+                top\_k 64; Mistral gives none. top\_k is set explicitly because vLLM otherwise
                 applies each model's own defaults (``the server applies generation\_config.json from
                 the Hugging Face model repository if it exists''; \texttt{vllm2026docs}), so the
                 models would be sampled differently without anyone noticing. Covered by the run at

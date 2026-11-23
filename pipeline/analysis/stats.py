@@ -68,6 +68,17 @@ def spread(df):
     return df.groupby("country")["deviation"].mean().std()
 
 
+def country_wealth():
+    nationalities = pd.read_csv(REPO / "experiment" / "countries" / "nationalities.csv")
+    return nationalities.set_index("country")["wealth_group"].map(WEALTH_RANK)
+
+
+WEALTH = country_wealth()
+
+
 def wealth_rho(df):
-    means = df.groupby("country").agg(effect=("deviation", "mean"), wealth=("wealth_group", "first"))
-    return means["effect"].corr(means["wealth"].map(WEALTH_RANK), method="spearman")
+    """Spearman correlation of the country effects with the wealth order (poor, normal, rich).
+    The wealth comes from nationalities.csv by country name, never from the rows: permutation_p shuffles
+    only the country labels, so a wealth column on the rows would no longer belong to the country."""
+    effect = df.groupby("country")["deviation"].mean()
+    return effect.rank().corr(WEALTH.reindex(effect.index).rank())

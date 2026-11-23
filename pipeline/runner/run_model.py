@@ -6,10 +6,13 @@ Run from the repository root, with the server address in BASE_URL:
   python -m pipeline.runner.run_model --model olmo-3.1-32b-instruct --judge
   python -m pipeline.runner.run_model --model qwen3-32b --check-done   (exit 0 when nothing is left)
   python -m pipeline.runner.run_model --model qwen3-32b --part 3 --parts 18   (one of 18 parts, for parallel jobs)
+  python -m pipeline.runner.run_model --model olmo-3.1-32b-instruct --judge --part 3 --parts 24
 
 With --parts, every prompt (with all its repeats) belongs to exactly one part, and each part writes its
-own file, results/raw/<model>.part<i>of<n>.jsonl, so parts can run at the same time on different GPUs.
-Answers already in the model's main file or in any of its part files count as done.
+own file, results/raw/<model>.part<i>of<n>.jsonl (judge: results/raw/judge/<judge>.part<i>of<n>.jsonl),
+so parts can run at the same time on different GPUs. The split depends only on the prompt_id, so prompts
+added later (a new model's answers to judge) do not move the old ones to another part.
+Answers already in the main file or in any of its part files count as done.
 """
 import argparse
 import csv
@@ -30,8 +33,13 @@ PROMPT_ROOM = 2500
 
 
 def read_csv(path):
+    return list(iter_csv(path))
+
+
+def iter_csv(path):
+    """Row by row, so a big file (the judge prompts) can be filtered without holding it all in memory."""
     with open(path, encoding="utf-8-sig", newline="") as f:
-        return list(csv.DictReader(f))
+        yield from csv.DictReader(f)
 
 
 def load_model(alias):
@@ -58,9 +66,9 @@ def read_records(path):
     return records
 
 
-def answer_files(name):
+def answer_files(name, folder=None):
     """The main file of a run and all its part files."""
-    raw = RESULTS / "raw"
+    raw = RESULTS / "raw" / (folder or "")
     return [raw / f"{name}.jsonl"] + sorted(raw.glob(f"{name}.part*of*.jsonl"))
 
 
@@ -129,8 +137,6 @@ def main():
         raise SystemExit("--part and --parts go together")
     if args.parts is not None and not 1 <= args.part <= args.parts:
         raise SystemExit(f"--part must be between 1 and {args.parts}")
-    if args.parts is not None and args.judge:
-        raise SystemExit("--part/--parts are for the main prompts only")
 
     model = load_model(args.model)
     settings = load_settings()
@@ -139,8 +145,8 @@ def main():
                 "top_k": int(settings["top_k"])}
     if args.judge:
         prompts_file = RESULTS / "processed" / "judge_prompts.csv"
-        out = RESULTS / "raw" / "judge" / f"{args.model}.jsonl"
-        files = [out]
+        files = answer_files(args.model, "judge")
+        out = files[0] if args.parts is None else RESULTS / "raw" / "judge" / f"{args.model}.part{args.part}of{args.parts}.jsonl"
         sampling["temperature"] = float(settings["judge_temperature"])
         max_tokens, repeats = int(settings["judge_max_tokens"]), 1
     else:
@@ -156,9 +162,9 @@ def main():
         if sampling["temperature"] == 0 and repeats != 1:
             raise SystemExit("temperature 0 gives the same answer every time: add --repeats 1")
 
-    prompts = [p for p in read_csv(prompts_file) if not args.variant or p["variant"] == args.variant]
-    if args.parts is not None:
-        prompts = [p for p in prompts if in_part(p["prompt_id"], args.part, args.parts)]
+    prompts = [p for p in iter_csv(prompts_file)
+               if (not args.variant or p["variant"] == args.variant)
+               and (args.parts is None or in_part(p["prompt_id"], args.part, args.parts))]
     todo = pending(prompts, done_keys(files), repeats)[: args.limit]
     if args.check_done:
         part = f", part {args.part} of {args.parts}" if args.parts is not None else ""

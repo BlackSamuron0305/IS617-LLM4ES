@@ -55,10 +55,13 @@ The judge only says what the reason claims about money. Whether the claim is rig
 
 - Hide the nationality: replace the applicant's demonym (`Syrian`) with `[NATIONALITY]` and the country name (`Syria`) with `[PASSPORT COUNTRY]`, in the application and in the reason. The judge then cannot code the same sentence differently for different passports. The old judge comparison showed the hiding barely changes the codes (kappa 0.96), so it is a safeguard, not a necessity.
 - Skip answers without a readable reason. Count them.
-- One judge call per answer; identical reasons for the same application can share one call.
+- One judge call per answer; identical reasons for the same application can share one call. Done since 2026-11-20: answers whose filled judge prompt is the same (same application, same reason once the nationality is hidden) share one call; `results/processed/judge_links.csv` says which call each answer uses. For Mistral and Qwen3 that is 336,000 answers in about 103,000 calls.
+
+## Judge model
+
+OLMo 3.1 32B (team decision, 2026-11-20). It is the judge only and is not audited, so no model judges its own reasons. It was the judge in the earlier design too.
 
 ## Open
 
-- **Which judge model.** OLMo 3.1 32B was the judge before. It is now also in `../config/models.csv`: if it is audited too, it would judge its own answers. Decide whether it is the judge or an audited model.
 - **Check by hand before any code is reported.** Code a sample by hand (for example 200 reasons, more from the models and nationalities where codes say yes) and compare with the judge. Draw it from the new runs: the questions were written from the earlier runs, so testing on those would make the judge look better than it is.
 - If the new guidance changes (grounds, amounts, the five items), update the paragraph on the grounds in `judge_prompt.txt`.
