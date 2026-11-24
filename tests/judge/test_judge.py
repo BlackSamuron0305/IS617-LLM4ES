@@ -33,3 +33,10 @@ def test_codes_are_read_and_incomplete_answers_rejected():
     answer = "{" + ", ".join(f'"{c}": "no"' for c in CODES) + ', "evidence": ""}'
     assert parse(answer)["funds_ok"] == 0
     assert parse(answer.replace('"funds_ok": "no", ', "")) is None
+
+
+def test_hand_check_kappa():
+    from pipeline.judge.hand_check import kappa
+    assert kappa([1, 0, 1, 0], [1, 0, 1, 0]) == 1
+    assert kappa([1, 1, 0, 0], [1, 0, 1, 0]) == 0
+    assert kappa([0, 0, 0], [0, 0, 0]) is None

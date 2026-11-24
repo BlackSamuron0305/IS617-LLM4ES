@@ -65,3 +65,13 @@ OLMo 3.1 32B (team decision, 2026-11-20). It is the judge only and is not audite
 
 - **Check by hand before any code is reported.** Code a sample by hand (for example 200 reasons, more from the models and nationalities where codes say yes) and compare with the judge. Draw it from the new runs: the questions were written from the earlier runs, so testing on those would make the judge look better than it is.
 - If the new guidance changes (grounds, amounts, the five items), update the paragraph on the grounds in `judge_prompt.txt`.
+
+## Hand check (to do before the codes are reported)
+
+`hand_check/sheet.csv` holds 150 reasons of the three main models (per model 25 at random and 25 that the judge coded with
+any concern), in random order, without the model, the nationality or the judge's codes. Each team member copies it to
+`hand_check/sheet_<name>.csv`, fills the eight code columns with 1 or 0 following the table above (the application is the
+row `applicant_id` of `../applicants/applicants.csv`), and does not open `hand_check/key.csv`. Then
+`python -m pipeline.judge.hand_check agreement` prints agreement and Cohen's kappa per code and coder and saves
+`hand_check/agreement.csv`. Report those numbers in the paper (Methods, "What the reasons say"). The sample is rebuilt
+identically with `python -m pipeline.judge.hand_check sample`.
